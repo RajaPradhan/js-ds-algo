@@ -25,5 +25,5 @@ const longestPalindromicSubstr = s => {
   return s.substring(subStartIndex, subStartIndex + subMaxLength);
 };
 
-console.log(longestPalindromicSubstr('babad'));
-console.log(longestPalindromicSubstr('cbbd'));
+console.log(longestPalindromicSubstr('babad')); // bab
+console.log(longestPalindromicSubstr('cbbd')); // bb
