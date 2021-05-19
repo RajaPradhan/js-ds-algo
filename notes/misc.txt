@@ -43,3 +43,16 @@ for (const prop in obj) {
     console.log(`obj.${prop} = ${obj[prop]}`);
   }
 }
+
+
+
+
+
+
+Two Sum Problem
+Easy String Manipulation Problem
+palindrome
+Find the closest coordinates to the origin.
+Check if two strings can represent the same word.
+Javascript higher order functions
+React rendering/caching
