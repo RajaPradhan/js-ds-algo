@@ -1,0 +1,203 @@
+Mutator array methods
+=====================
+1. splice() - insert, delete, replace
+2. push()
+3. pop()
+4. shift()
+5. unshift()
+6. sort()
+7. reverse()
+8. fill()
+9. forEach()
+
+Non-mutator array methods
+=========================
+1. slice()
+2. filter()
+3. map()
+4. reduce()
+5. concat()
+6. join()
+7. flat()
+8. flatMap()
+9. includes()
+10. some()
+11. every()
+12. find()
+13. findIndex()
+14. indexOf()
+15. lastIndexOf()
+
+--------
+Array.prototype.splice()
+========================
+The splice() method can be used to insert, update or delete items in an array in place.
+- It modifies the original array and returns the deleted array.
+- If only one element is removed, an array of one element is returned.
+- If no elements are removed, an empty array is returned.
+
+NOTE: Inserting take place just BEFORE the item in start index.
+
+splice(startIndex, deleteCount, 'item1ToInsert', 'item2ToInsert', 'itemNToInsert')
+
+let myFish = ['angel', 'clown', 'mandarin', 'sturgeon']
+let removed = myFish.splice(2, 0, 'drum')
+
+// myFish is ["angel", "clown", "drum", "mandarin", "sturgeon"] 
+// removed is [], no elements removed
+
+let myFish = ['angel', 'clown', 'drum', 'mandarin', 'sturgeon']
+let removed = myFish.splice(3, 1) 
+
+// myFish is ["angel", "clown", "drum", "sturgeon"]
+// removed is ["mandarin"] 
+
+let myFish = ['angel', 'clown', 'drum', 'sturgeon']
+let removed = myFish.splice(2, 1, 'trumpet')
+
+// myFish is ["angel", "clown", "trumpet", "sturgeon"]
+// removed is ["drum"]
+
+
+Array.prototype.slice()
+=======================
+- Returns a new array of sliced items.
+- The original array is not modified.
+
+start to end (end not included). Item at end index is not included in the sliced array.
+
+slice[startIndex, endIndex)
+
+const animals = ['ant', 'bison', 'camel', 'duck', 'elephant'];
+
+console.log(animals.slice(2, 4));
+// expected output: Array ["camel", "duck"]
+
+Convert array-like object to array
+----------------------------------
+function list() {
+  return Array.prototype.slice.call(arguments)
+}
+
+let list1 = list(1, 2, 3) // [1, 2, 3]
+
+
+Array.prototype.join()
+======================
+The join() method creates and returns a new string by concatenating all of the elements in an array (or an array-like object), separated by commas 
+or a specified separator string. If the array has only one item, then that item will be returned without using the separator.
+
+var a = ['Wind', 'Water', 'Fire'];
+a.join();      // 'Wind,Water,Fire'
+a.join(', ');  // 'Wind, Water, Fire'
+a.join(' + '); // 'Wind + Water + Fire'
+a.join('');    // 'WindWaterFire'
+
+Joining an array-like object
+----------------------------
+function f(a, b, c) {
+  var s = Array.prototype.join.call(arguments);
+  console.log(s); // '1,a,true'
+}
+f(1, 'a', true);
+//expected output: "1,a,true"
+
+-----
+
+Works at the end of the array, mutators
+push(): The push() method adds one or more elements to the end of an array and returns the new length of the array.
+pop(): The pop() method removes the last element from an array and returns that element. This method changes the length of the array.
+
+let arr = [1, 2, 3];
+
+arr.push(4, 5);
+console.log(arr); // [1, 2, 3, 4, 5]
+
+arr.push([6, 7]);
+console.log(arr); // [1, 2, 3, 4, 5, [6, 7]]       <------------- items are NOT spread
+
+Works at the beginning of the array, mutators
+unshift(): The unshift() method adds one or more elements to the beginning of an array and returns the new length of the array.
+shift(): The shift() method removes the first element from an array and returns that removed element. This method changes the length of the array.
+
+push(), unshift() --- u
+pop(), shift()
+
+
+concat() - Non mutator
+--------
+let arr = [1, 2, 3];
+let res = [];
+
+res = arr.concat(4, 5);
+console.log(res); // [1, 2, 3, 4, 5]
+
+res = res.concat([6, 7], 8, 9, [10]);                    
+console.log(res); // [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]   <------------- items are spread
+
+Array.prototype.reduce()
+========================
+The reduce() method executes a reducer function (that you provide) on each element of the array, resulting in single output value.
+
+Your reducer function's returned value is assigned to the accumulator, whose value is remembered across each iteration throughout the array, 
+and ultimately becomes the final, single resulting value.
+
+Calling reduce() on an empty array without an initialValue will throw a TypeError.
+
+- If initialValue is provided in the call to reduce(), then accumulator will be equal to initialValue, and currentValue will be equal 
+to the first value in the array. 
+- If no initialValue is provided, then accumulator will be equal to the first value in the array, and currentValue will be equal to the second.
+- If initialValue is not provided, reduce() will execute the callback function starting at index 1, skipping the first index. If initialValue is provided, 
+it will start at index 0.
+- If the array only has one element (regardless of position) and no initialValue is provided, or if initialValue is provided but the array is empty, 
+the solo value will be returned without calling callback.
+
+Pollyfill
+---------
+if (!Array.prototype.reduce) {
+  Array.prototype.reduce = function(fn, initial) {
+    this.forEach(item => {
+      initial = initial !== undefined ? fn(initial, item) : item
+    })
+
+    return initial;
+  }
+}
+
+Sum of values in an object array
+Flatten an array of arrays
+Counting instances of values in an object
+Grouping objects by a property
+Remove duplicate items in an array
+Running Promises in Sequence
+
+Write map using reduce
+----------------------
+Array.prototype.mapUsingReduce = function(cb) {
+  return this.reduce((acc, curr) => {
+    return [...acc, cb(curr)];
+  }, [])
+}
+
+const arr = [1, 2, 3, 4];
+
+console.log(arr.mapUsingReduce((x) => x * 2));
+
+Array.prototype.reduce()
+========================
+let total = [ 0, 1, 2, 3 ].reduce(
+  ( accumulator, currentValue ) => accumulator + currentValue,
+  0
+)
+
+Remove duplicate items in an array
+----------------------------------
+let myArray = ['a', 'b', 'a', 'b', 'c', 'e', 'e', 'c', 'd', 'd', 'd', 'd']
+let myOrderedArray = myArray.reduce(function (accumulator, currentValue) {
+  if (accumulator.indexOf(currentValue) === -1) {
+    accumulator.push(currentValue)
+  }
+  return accumulator
+}, [])
+
+console.log(myOrderedArray)
